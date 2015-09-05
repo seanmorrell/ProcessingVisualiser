@@ -10,6 +10,9 @@ public class ProcessingVisualiser extends PApplet  {
 	AudioInput in;
 	float[] angle;
 	float[] y, x;
+	
+	int screenWidth = 1920;	//TO CHANGE: Hardcoded resolution -> Native resolution
+	int screenHeight = 1080;
 	 
 	public void setup()
 	{
@@ -20,23 +23,40 @@ public class ProcessingVisualiser extends PApplet  {
 	  x = new float[fft.specSize()];
 	  angle = new float[fft.specSize()];
 	  frameRate(240);
+	  System.out.println(displayWidth + " x " + displayHeight);
 	}
 	 
 	public void draw()
 	{
 	  background(0);
+	  
+	  //Mouse clicks control background
+	  if (mousePressed == true) {
+		    if (mouseButton == LEFT) {
+		        background(126); // Grey
+		    } else if (mouseButton == RIGHT) { 
+		    	background(255); // White
+		    }
+		  } else {
+			   background(0); // Black
+		  }
+	  
 	  fft.forward(in.mix);
+	  
 	  doubleAtomicSprocket();
 	  
 	  stroke(255, 0, 0, 128);
 	  // draw the spectrum as a series of vertical lines
 	  // I multiple the value of getBand by 4 
 	  // so that we can see the lines better
+	  int specMargin = (screenWidth - fft.specSize()) / 2;	//Variable for centring the spectrum
 	  for(int i = 0; i < fft.specSize(); i++)
 	  {
-	    line(i, height, i, height - fft.getBand(i)*64);
+		stroke(fft.specSize()-i, i, 0, (fft.specSize()-i)/4);
+	    line(i+specMargin, height, i+specMargin, (height - (fft.getBand(i)*i/4)));
 	  }
 	 
+	  /*
 	  stroke(255);
 	  // I draw the waveform by connecting 
 	  // neighbor values with a line. I multiply 
@@ -50,10 +70,12 @@ public class ProcessingVisualiser extends PApplet  {
 	    line(i, 50 + in.left.get(i)*50, i+1, 50 + in.left.get(i+1)*50);
 	    line(i, 150 + in.right.get(i)*50, i+1, 150 + in.right.get(i+1)*50);
 	  }
+	  */
+	  
 	}
 	
 	 public void settings() {
-		size(1920, 1080, P3D);
+		 size(screenWidth, screenHeight, P3D);		
 	 }
 	 
 	void doubleAtomicSprocket() {
