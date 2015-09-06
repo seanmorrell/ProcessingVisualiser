@@ -10,10 +10,7 @@ public class ProcessingVisualiser extends PApplet  {
 	AudioInput in;
 	float[] angle;
 	float[] y, x;
-	
-	int screenWidth = 1920;	//TO CHANGE: Hardcoded resolution -> Native resolution
-	int screenHeight = 1080;
-	 
+		 
 	public void setup()
 	{
 	  minim = new Minim(this);
@@ -38,7 +35,7 @@ public class ProcessingVisualiser extends PApplet  {
 		    	background(255); // White
 		    }
 		  } else {
-			   background(0); // Black
+			   background(0); // Black (standard)
 		  }
 	  
 	  fft.forward(in.mix);
@@ -49,11 +46,12 @@ public class ProcessingVisualiser extends PApplet  {
 	  // draw the spectrum as a series of vertical lines
 	  // I multiple the value of getBand by 4 
 	  // so that we can see the lines better
-	  int specMargin = (screenWidth - fft.specSize()) / 2;	//Variable for centring the spectrum
+	  //int specMargin = (screenWidth - fft.specSize()) / 2;	//Variable for centring the spectrum
 	  for(int i = 0; i < fft.specSize(); i++)
 	  {
 		stroke(fft.specSize()-i, i, 0, (fft.specSize()-i)/4);
-	    line(i+specMargin, height, i+specMargin, (height - (fft.getBand(i)*i/4)));
+	    line(4*i+4, height, 4*i+4, (height - (fft.getBand(i)*4) - i/64));
+	    //line(width-4*i, height, width-4*i, (height - (fft.getBand(i)*8)));
 	  }
 	 
 	  /*
@@ -75,8 +73,9 @@ public class ProcessingVisualiser extends PApplet  {
 	}
 	
 	 public void settings() {
-		 size(screenWidth, screenHeight, P3D);		
+		 size(displayWidth, displayHeight, P3D);		
 	 }
+	 
 	 
 	void doubleAtomicSprocket() {
 	  noStroke();
