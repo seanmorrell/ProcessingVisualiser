@@ -6,6 +6,10 @@ NOTE: Requires local installations of Processing, Minim and JOGL
 
 Version history:
 
+v0.0.3
+- Automatically applies native resolution
+- Improved spectrum effect
+
 v0.0.2
 - Updated spectrum: Centred and added gradient colour.
 - Mouse clicks now alter background between black, grey and white.
