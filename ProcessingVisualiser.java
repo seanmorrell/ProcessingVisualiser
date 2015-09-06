@@ -19,8 +19,8 @@ public class ProcessingVisualiser extends PApplet  {
 	  y = new float[fft.specSize()];
 	  x = new float[fft.specSize()];
 	  angle = new float[fft.specSize()];
+	  noCursor();
 	  frameRate(240);
-	  System.out.println(displayWidth + " x " + displayHeight);
 	}
 	 
 	public void draw()
