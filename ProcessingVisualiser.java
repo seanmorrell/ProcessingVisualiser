@@ -1,8 +1,10 @@
+package processingvisualiser;
+
 import processing.core.*;
 import ddf.minim.analysis.*;
 import ddf.minim.*;
 
-public class ProcessingVisualiser extends PApplet  {
+public class ProcessingVisualiser extends PApplet {
 
 	Minim minim;
 	AudioPlayer jingle;
@@ -11,69 +13,67 @@ public class ProcessingVisualiser extends PApplet  {
 	float[] angle;
 	float[] y, x;
 		 
-	public void setup()
-	{
-	  minim = new Minim(this);
-	  in = minim.getLineIn(Minim.STEREO, 2048, 192000);
-	  fft = new FFT(in.bufferSize(), in.sampleRate());
-	  y = new float[fft.specSize()];
-	  x = new float[fft.specSize()];
-	  angle = new float[fft.specSize()];
-	  noCursor();
-	  frameRate(240);
+	public void setup() {
+		  minim = new Minim(this);
+		  in = minim.getLineIn(Minim.STEREO, 2048, 192000);
+		  fft = new FFT(in.bufferSize(), in.sampleRate());
+		  y = new float[fft.specSize()];
+		  x = new float[fft.specSize()];
+		  angle = new float[fft.specSize()];
+		  noCursor();
+		  frameRate(240);
 	}
-	 
-	public void draw()
-	{
-	  background(0);
-	  
-	  //Mouse clicks control background
-	  if (mousePressed == true) {
-		    if (mouseButton == LEFT) {
-		        background(126); // Grey
-		    } else if (mouseButton == RIGHT) { 
-		    	background(255); // White
-		    }
-		  } else {
-			   background(0); // Black (standard)
+
+	public void draw() {
+		background(0);
+		  
+		  //Mouse clicks control background
+		  if (mousePressed == true) {
+			    if (mouseButton == LEFT) {
+			        background(126); // Grey
+			    } else if (mouseButton == RIGHT) { 
+			    	background(255); // White
+			    }
+			  } else {
+				   background(0); // Black (standard)
+			  }
+		  
+		  fft.forward(in.mix);
+		  
+		  doubleAtomicSprocket();
+		  
+		  stroke(255, 0, 0, 128);
+		  // draw the spectrum as a series of vertical lines
+		  // I multiple the value of getBand by 4 
+		  // so that we can see the lines better
+		  //int specMargin = (screenWidth - fft.specSize()) / 2;	//Variable for centring the spectrum
+		  for(int i = 0; i < fft.specSize(); i++)
+		  {
+			stroke(fft.specSize()-i, i, 0, (fft.specSize()-i)/4);
+		    line(4*i+4, height, 4*i+4, (height - (fft.getBand(i)*4) - i/64));
+		    //line(width-4*i, height, width-4*i, (height - (fft.getBand(i)*8)));
 		  }
-	  
-	  fft.forward(in.mix);
-	  
-	  doubleAtomicSprocket();
-	  
-	  stroke(255, 0, 0, 128);
-	  // draw the spectrum as a series of vertical lines
-	  // I multiple the value of getBand by 4 
-	  // so that we can see the lines better
-	  //int specMargin = (screenWidth - fft.specSize()) / 2;	//Variable for centring the spectrum
-	  for(int i = 0; i < fft.specSize(); i++)
-	  {
-		stroke(fft.specSize()-i, i, 0, (fft.specSize()-i)/4);
-	    line(4*i+4, height, 4*i+4, (height - (fft.getBand(i)*4) - i/64));
-	    //line(width-4*i, height, width-4*i, (height - (fft.getBand(i)*8)));
-	  }
-	 
-	  /*
-	  stroke(255);
-	  // I draw the waveform by connecting 
-	  // neighbor values with a line. I multiply 
-	  // each of the values by 50 
-	  // because the values in the buffers are normalized
-	  // this means that they have values between -1 and 1. 
-	  // If we don't scale them up our waveform 
-	  // will look more or less like a straight line.
-	  for(int i = 0; i < in.left.size() - 1; i++)
-	  {
-	    line(i, 50 + in.left.get(i)*50, i+1, 50 + in.left.get(i+1)*50);
-	    line(i, 150 + in.right.get(i)*50, i+1, 150 + in.right.get(i+1)*50);
-	  }
-	  */
-	  
+		 
+		  /*
+		  stroke(255);
+		  // I draw the waveform by connecting 
+		  // neighbor values with a line. I multiply 
+		  // each of the values by 50 
+		  // because the values in the buffers are normalized
+		  // this means that they have values between -1 and 1. 
+		  // If we don't scale them up our waveform 
+		  // will look more or less like a straight line.
+		  for(int i = 0; i < in.left.size() - 1; i++)
+		  {
+		    line(i, 50 + in.left.get(i)*50, i+1, 50 + in.left.get(i+1)*50);
+		    line(i, 150 + in.right.get(i)*50, i+1, 150 + in.right.get(i+1)*50);
+		  }
+		  */
 	}
 	
 	 public void settings() {
-		 size(displayWidth, displayHeight, P3D);		
+		 size(1920, 1080, P3D);				//HARD RESOLUTION FOR EXPORT	
+		 fullScreen();
 	 }
 	 
 	 
@@ -122,8 +122,7 @@ public class ProcessingVisualiser extends PApplet  {
 	  super.stop();
 	}
 	
-	public static void main(String args[]) {
-	    PApplet.main(new String[] { "--present", "ProcessingVisualiser" });
+	public static void main(String _args[]) {
+		PApplet.main(new String[] { processingvisualiser.ProcessingVisualiser.class.getName() });
 	}
-	
 }

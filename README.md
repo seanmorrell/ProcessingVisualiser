@@ -5,6 +5,9 @@ NOTE: Requires local installations of Processing, Minim and JOGL
 
 
 Version history:
+v0.1.0
+- Configured to be exportable using Proclipsing plugin
+
 v0.0.4
 - Removed cursor.
 
