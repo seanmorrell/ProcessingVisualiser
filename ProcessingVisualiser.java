@@ -12,6 +12,7 @@ public class ProcessingVisualiser extends PApplet {
 	AudioInput in;
 	float[] angle;
 	float[] y, x;
+	PFont Helveticastd;
 		 
 	public void setup() {
 		  minim = new Minim(this);
@@ -22,9 +23,11 @@ public class ProcessingVisualiser extends PApplet {
 		  angle = new float[fft.specSize()];
 		  noCursor();
 		  frameRate(240);
+		  Helveticastd = loadFont("HelveticaLTStd-Blk-99.vlw");		//In source directory for export
 	}
 
 	public void draw() {
+		float loudestFrequency = 30;
 		background(0);
 		  
 		  //Mouse clicks control background
@@ -51,8 +54,11 @@ public class ProcessingVisualiser extends PApplet {
 		  {
 			stroke(fft.specSize()-i, i, 0, (fft.specSize()-i)/4);
 		    line(4*i+4, height, 4*i+4, (height - (fft.getBand(i)*4) - i/64));
+		    if(fft.getBand(i)>loudestFrequency && fft.getBand(i)<fft.specSize()/3)loudestFrequency=fft.getBand(i);
 		    //line(width-4*i, height, width-4*i, (height - (fft.getBand(i)*8)));
 		  }
+		  
+		  
 		 
 		  /*
 		  stroke(255);
@@ -69,6 +75,16 @@ public class ProcessingVisualiser extends PApplet {
 		    line(i, 150 + in.right.get(i)*50, i+1, 150 + in.right.get(i+1)*50);
 		  }
 		  */
+		  
+		  
+		  //Text that alters size with loudest frequency		  
+		  int loudestFrequencyInt = (int)loudestFrequency;
+		  textAlign(CENTER);
+		  textFont(Helveticastd);
+		  textSize(loudestFrequencyInt);
+		  fill(126, 75);
+		  text("YOSH", 960, 500);
+		  text("SUCKS", 960, 580);
 	}
 	
 	 public void settings() {

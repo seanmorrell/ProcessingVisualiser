@@ -5,6 +5,10 @@ NOTE: Requires local installations of Processing, Minim and JOGL
 
 
 Version history:
+v0.1.1
+- Added text support
+- Text responds in size to amplitude of bass frequencies
+
 v0.1.0
 - Configured to be exportable using Proclipsing plugin
 
